@@ -42,12 +42,13 @@ src/
 ## ⚙️ Installation & Setup
 
 ### 1. Clone the repository
-```bash
 git clone https://github.com/DiyaGupta01-gif/task-manager-frontend.git
 cd task-manager-frontend
+
 2. Install dependencies
 npm install
-3. Run the application
+
+4. Run the application
 npm start
 🔗 Backend API
 This frontend connects to:
@@ -58,14 +59,11 @@ Make sure all API calls use this URL instead of localhost.
 
 🌍 Deployment
 Hosted on Netlify
-
 Automatic deployment via GitHub
 
 💡 Future Improvements
 🎨 Improve UI/UX design
-
 📱 Mobile responsiveness
-
 🌙 Dark mode support
 
  
