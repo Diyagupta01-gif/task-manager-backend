@@ -1,31 +1,33 @@
 const jwt = require("jsonwebtoken");
 
-const protect = (req, res, next) => {
+const authMiddleware = (req, res, next) => {
   try {
-    const header = req.headers.authorization;
+    const authHeader = req.headers.authorization;
 
-    if (!header) {
-      return res.status(401).json({ message: "No token" });
+    console.log("AUTH HEADER:", authHeader);
+
+    // check header exists
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "No token provided" });
     }
 
-    // split properly
-    const parts = header.split(" ");
+    // extract token
+    const token = authHeader.split(" ")[1];
 
-    if (parts.length !== 2) {
-      return res.status(401).json({ message: "Token format invalid" });
-    }
-
-    const token = parts[1];
-
+    // verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    req.user = { id: decoded.id };
+    console.log("DECODED:", decoded);
+
+    // attach user
+    req.user = decoded.id;
 
     next();
+
   } catch (error) {
-    console.log("AUTH ERROR:", error.message);
-    return res.status(401).json({ message: "Token failed" });
-  }
+  console.log("JWT ERROR:", error.message); // 🔥 ADD THIS
+  return res.status(401).json({ message: "Token failed" });
+}
 };
 
-module.exports = protect;
+module.exports = authMiddleware;

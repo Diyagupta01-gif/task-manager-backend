@@ -8,6 +8,8 @@ const authRoutes = require('./routes/authRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 
 dotenv.config();
+console.log("JWT SECRET:", process.env.JWT_SECRET);
+
 connectDB();
 
 const app = express();
