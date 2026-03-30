@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const Groq = require("groq-sdk");
+
+const Groq = require("groq-sdk").default; // ✅ FIXED
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
@@ -18,13 +19,13 @@ router.post("/", async (req, res) => {
 
     const chatCompletion = await groq.chat.completions.create({
       messages: [{ role: "user", content: message }],
-      model: "llama-3.3-70b-versatile", // ✅ NEW MODEL
+      model: "llama3-8b-8192", // ✅ SAFE MODEL
     });
 
-    const reply = chatCompletion.choices[0].message.content;
+    const reply =
+      chatCompletion.choices[0]?.message?.content || "No response";
 
     res.json({ reply });
-
   } catch (error) {
     console.error("ERROR:", error);
     res.status(500).json({ reply: "AI error ❌" });
