@@ -17,7 +17,7 @@ connectDB();
 const app = express();
 
 // ✅ ADD THIS (Vapp.use(cors());
-app.use(cors({ origin: "*" }));
+app.use(cors({ origin: "*" })); 
 
 // middleware
 app.use(express.json());
