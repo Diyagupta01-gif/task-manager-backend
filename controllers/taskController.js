@@ -1,8 +1,15 @@
 const Task = require("../models/Task");
+const mongoose = require("mongoose");
+
 
 // ================= CREATE TASK =================
 const createTask = async (req, res) => {
   try {
+    // ❌ guest user → task create allow nahi
+    if (!mongoose.Types.ObjectId.isValid(req.user.id)) {
+      return res.status(200).json({ message: "Guest cannot create tasks" });
+    }
+
     const task = await Task.create({
       title: req.body.title,
       user: req.user.id,
@@ -15,20 +22,32 @@ const createTask = async (req, res) => {
   }
 };
 
+
 // ================= GET TASKS =================
 const getTasks = async (req, res) => {
   try {
+    // 🔥 FIX: guest user check
+    if (!mongoose.Types.ObjectId.isValid(req.user.id)) {
+      return res.json([]); // guest → empty tasks
+    }
+
     const tasks = await Task.find({ user: req.user.id });
     res.json(tasks);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Server error" });
   }
 };
 
+
 // ================= UPDATE TASK =================
-// (Edit title + Toggle complete)
 const updateTask = async (req, res) => {
   try {
+    // ❌ guest user → update allow nahi
+    if (!mongoose.Types.ObjectId.isValid(req.user.id)) {
+      return res.status(200).json({ message: "Guest cannot update tasks" });
+    }
+
     const task = await Task.findById(req.params.id);
 
     if (!task) {
@@ -40,12 +59,12 @@ const updateTask = async (req, res) => {
       return res.status(401).json({ message: "Not authorized" });
     }
 
-    // ✏️ UPDATE TITLE (NEW FEATURE)
+    // update title
     if (req.body.title !== undefined) {
       task.title = req.body.title;
     }
 
-    // ✔️ TOGGLE COMPLETED
+    // toggle complete
     if (req.body.toggle === true) {
       task.completed = !task.completed;
     }
@@ -59,9 +78,15 @@ const updateTask = async (req, res) => {
   }
 };
 
+
 // ================= DELETE TASK =================
 const deleteTask = async (req, res) => {
   try {
+    // ❌ guest user → delete allow nahi
+    if (!mongoose.Types.ObjectId.isValid(req.user.id)) {
+      return res.status(200).json({ message: "Guest cannot delete tasks" });
+    }
+
     const task = await Task.findById(req.params.id);
 
     if (!task) {
@@ -77,9 +102,11 @@ const deleteTask = async (req, res) => {
 
     res.json({ message: "Task deleted" });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 module.exports = {
   createTask,
