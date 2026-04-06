@@ -7,6 +7,11 @@ const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
 });
 
+
+
+console.log("GROQ KEY:", process.env.GROQ_API_KEY ? "Loaded ✅" : "Missing ❌");
+
+
 router.post("/", async (req, res) => {
   console.log("Chat API hit 🔥");
 
@@ -19,7 +24,7 @@ router.post("/", async (req, res) => {
 
     const chatCompletion = await groq.chat.completions.create({
       messages: [{ role: "user", content: message }],
-      model: "llama3-8b-8192", // ✅ SAFE MODEL
+   model: "llama-3.3-70b-versatile",  // ✅ replace llama3-8b-8192 with this
     });
 
     const reply =

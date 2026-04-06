@@ -5,7 +5,7 @@ const Task = require("../models/Task");
 
 // GET TASKS
 router.get("/", authMiddleware, async (req, res) => {
-  const tasks = await Task.find({ user: req.user });
+  const tasks = await Task.find({ user: req.user.id });
   res.json(tasks);
 });
 
