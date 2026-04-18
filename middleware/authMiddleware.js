@@ -19,7 +19,7 @@ const authMiddleware = async (req, res, next) => {
     console.log("DECODED:", decoded);
 
     // Attach user id to request
-    req.user = decoded;
+    req.userId = decoded.userId;
     next();
   } catch (error) {
     console.log("JWT Auth Error:", error.message);
