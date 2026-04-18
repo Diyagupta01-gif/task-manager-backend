@@ -14,7 +14,7 @@ router.post("/", authMiddleware, async (req, res) => {
   try {
     const task = await Task.create({
       title: req.body.title,
-      user: req.user,
+      user: req.user.id,
     });
 
     res.json(task);
