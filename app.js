@@ -11,6 +11,7 @@ const chatRoutes = require('./routes/chatRoutes');
 
 dotenv.config();
 console.log("JWT SECRET:", process.env.JWT_SECRET);
+console.log("GROQ KEY:", process.env.GROQ_API_KEY); 
 
 connectDB();
 
